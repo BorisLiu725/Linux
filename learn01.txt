@@ -1,0 +1,189 @@
+mkdir A/B/C -p  :递归创建，把你没有的也创建好
+ln -s a.txt a-softlink.txt :创建软链接--> 类似于windows上的快捷方式
+ln a.txt a-hardlink.txt :创建硬链接 -->类似于一个指针，直接指向a.txt里面的数据
+			如果删掉了a.txt,也可以通过硬链接找到a.txt里面的数据，
+			除非硬链接也被删除了，文件内容才会真的消失
+cat a.txt b.txt > xxx.txt ：可以将两个文件合并为一个文件
+grep "a" xxx.txt :寻找有a这个字符串的内容,从文件中找内容
+grep -n "a" xxx.txt: 同上，不过带有行号
+grep -n "^a" xxx.txt:以a开头
+grep -n "a$" xxx.txt:以a结尾
+find /bin -name "*name*" :找某个文件，-name 按名称查找 "*name*" 文件包含"name"
+			/bin 从那个目录查找
+find /bin -size -1M :小于1M  +1M：大于1M  -size +4M -size -5M :4M<文件 <5M
+
+tar -zcvf test.tar.gz *.py : 压缩 -zcvf  test.tar 压缩后的文件名 *.py 压缩内容
+tar -zxvf test.tar.gz :解压 -zxvf  test.tar 要解压的文件
+tar -jcvf test.tar.bz2 *.py :压缩的另一种格式，比.gz要大一点
+tar -jxvf test.tar.bz2 :解压
+zip test.zip *.py :zip格式的压缩，比bz2要大
+unzip test.zip :解压
+tar -zxvf test.tar.gz -C demo :将压缩包解压到指定目录 -C
+unzip -d ./test myzip.zip :同上  不过参数是 -d
+which ls ;which cp :查看ls或cp命令在那个文件夹下
+==================================================================
+cal：当前月份的日历
+cal -y 2019 :2019年的日历
+date "+%Y年%m月%d日" :以特定格式打印日期
+date ：还可以设置时间，这里不多介绍
+===============================================================
+ps :当前终端开启的程序
+ps -aux:整台电脑所开启的程序
+ps 里面的一些数值{
+	COMMAND：运行方式
+	TIME:运行时间
+	STAT:状态:休眠；运行等
+
+}
+
+top :动态展示
+htop:动态展示+颜色
+kill -9 PID ：强制删掉进程
+=============================================================
+reboot :重启
+shutdown -h now :立即关机
+shutdown -h +10 :10分钟之后关机
+shutdown -h 20:35 :	20:35分关机
+=============================================================
+df -h :查看硬盘使用情况
+{
+	/dev/sda1：第一块硬盘的第一个分区
+	/dev/sdb2:第二块硬盘的第二个分区
+	sd[abc...][123...]
+}
+du -h:当前文件夹大小
+ifconfig :查看网卡信息，每块都是一个网卡
+{
+	lo:本地回环，虚拟网卡。一般用来测试自己的电脑能不能上网
+}
+ifconfig 网卡名称 ip地址:可以手动修改ip
+ping ip地址或url :查看能不能和指定地址通信
+==================================================================
+sudo useradd haha -m :创建一个用户 -m顺便在/home/下创建haha文件夹为这个用户的家目录
+
+注意：当你创建一个账户的时候，默认他没有在sudo组和adm组里面
+也就是说，su - haha在haha里面不能sudo -s 切换到root账户，因为没有权限
+如果我们就想要获得这个权限呢？
+sudo usermod -a -G adm 用户名
+sudo usermod -a -G sudo 用户名
+
+我们可以在/etc/passwd 文件下看到我们的用户
+sudo passwd haha :为haha用户设置密码/修改密码
+su haha ：切换到haha账户 但是路径还是在原账户的路径
+su - haha:切换到haha账户
+sudo -s :切换到root管理员,身份就变成root
+如果我们在其他账户上用sudo xxx 只是以root的身份运行
+
+whoami:查看当前账户
+ssh liuyong@IP地址 :可以远程连接
+who :查看当前有几个人登陆这台主机
+sudo userdel haha:删除用户（保留其家目录） 如果想删除这个用户的家目录加上-r
+
+cat /etc/group：查看所有的组（还可以用groupmod 加两次Tab键）
+
+sudo groupadd xxx:添加xxx组
+
+sudo groupdel xxx:删除xxx组
+
+sudo chgrp xxx 1.py :将1.py的组改为xxx
+sudo chown haha 1.py :将1.py的文件拥有者改为haha
+
+
+chmod u=rwx 2.py
+chmod u=rwx,g=rx,o=r 2.py :修改文件的权限
+{
+	u:文件拥有着
+	g：文件所属组
+	o：其他人
+}
+chmod 714 1.py :同时该多个
+r=4 w=2 x=1
+
+==========================================================
+
+vim 使用命令指南
+
+命令模式变成-->插入模式（光标在8  i a o I A O 的作用）
+OOOO
+IIIIII==============iiiii8aaaaa======================AAA
+oooo
+
+-----------------------------------------------------------
+yy:复制光标所在的这一行
+4yy:复制光标所在行向下四行
+p：粘贴
+dd：剪贴/删除光标所在的这一行
+4dd:剪贴/删除光标所在行向下四行
+D:从当前光标开始剪贴，一直到行末
+d0:剪贴当前光标之前的所有内容（不包括当前光标）
+x：删除当前光标，每次只能删除一个
+X:删除当前光标前面的那一个，每次只能删除一个
+
+
+hello world!
+
+
+h:左
+j：下
+k：上
+l：右
+H:当前屏幕的上方
+M:当前屏幕的中间
+L:当前屏幕的下方
+
+ctrl+f :向下翻一页
+ctrl+b :向上翻一页
+ctrl+u :向上翻半页
+ctrl+d :向下翻半页
+
+20G:快速定位到20行
+G：快速回到最后一行
+gg：快速回到第一行
+w：向后跳一个单词的长度，即跳到下一个单词的开始处
+d：向前跳一个单词的长度，即跳到上一个单词的开始处
+dw：删除一个单词
+{:向上跳一片代码
+}:向下跳一片代码
+
+
+
+
+
+u:撤销刚才的操作
+ctrl+r：反撤销
+
+
+选中一片代码：
+v ：选中光标所在的地方
+V ：选中光标所在的一行
+
+
+>> :向右移动代码
+<< :向左移动代码
+. :重复执行上一次的命令
+
+
+r:替换一个字符
+R：替换光标以及其后面的字符
+------------------------------------
+/：查找
+n：下一个
+N：上一个
+
+:%s/abc/123/g :将全文abc全部替换为123
+:1,10s/123/abc/g ：将1～10行的124替换为abc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
